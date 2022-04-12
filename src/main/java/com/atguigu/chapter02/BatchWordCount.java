@@ -16,7 +16,7 @@ public class BatchWordCount {
         ExecutionEnvironment env = ExecutionEnvironment.getExecutionEnvironment();
 //      2 从文件读取数据 按行读取(存储元素就是每行的文本)
         DataSource<String> linDS = env.readTextFile("input/words.txt");
-//      3 转换数据格式
+//      3 转换数据格式 DataSet API
         FlatMapOperator<String, Tuple2<String, Long>> wordAndOne = linDS.flatMap((String line, Collector<Tuple2<String, Long>> out )-> {
             String[] words = line.split(" ");
             for (String word : words) {
