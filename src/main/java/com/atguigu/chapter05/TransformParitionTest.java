@@ -1,7 +1,9 @@
 package com.atguigu.chapter05;
 
+import org.apache.flink.api.common.eventtime.*;
 import org.apache.flink.api.common.functions.Partitioner;
 import org.apache.flink.api.java.functions.KeySelector;
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.streaming.api.datastream.DataStreamSource;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
 import org.apache.flink.streaming.api.functions.source.RichParallelSourceFunction;
@@ -22,6 +24,21 @@ public class TransformParitionTest {
                 new Event("Bob", "./prod?id=2", 3800L),
                 new Event("Bob", "./prod?id=3", 4200L)
         );
+        DataStream<Event> stream2 = env.addSource(new ClickSource());
+//        stream2.assignTimestampsAndWatermarks(new WatermarkStrategy<Event>() {
+//
+//
+//            @Override
+//            public WatermarkGenerator<Event> createWatermarkGenerator(WatermarkGeneratorSupplier.Context context) {
+//                return null;
+//            }
+//
+//            @Override
+//            public TimestampAssigner<Event> createTimestampAssigner(TimestampAssignerSupplier.Context context) {
+//                return WatermarkStrategy.super.createTimestampAssigner(context);
+//            }
+//        });
+        stream2.rebalance().print().setParallelism(4);
 //    重缩放分区
 //        env.addSource(new RichParallelSourceFunction<Integer>() {
 //        @Override
