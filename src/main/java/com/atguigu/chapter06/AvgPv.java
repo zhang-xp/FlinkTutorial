@@ -7,7 +7,7 @@ import org.apache.flink.api.java.tuple.Tuple2;
 import java.util.HashSet;
 
 public class AvgPv implements AggregateFunction<Event, Tuple2<Long, HashSet<String>>, Double> {
-    //    创建累加器
+    //    创建累加器 这就是为聚合创建了一个初始状态，每个聚 合任务只会调用一次。
     @Override
     public Tuple2<Long, HashSet<String>> createAccumulator() {
         return Tuple2.of(0L, new HashSet<String>());
